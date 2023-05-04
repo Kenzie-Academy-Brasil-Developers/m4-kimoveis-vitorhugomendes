@@ -4,28 +4,28 @@ import { User } from '../entities';
 import { AppDataSource } from '../data-source';
 import { AppError } from '../error';
 
-const ensureEmailIsUniqueMiddleware = async (
+const ensureIdIsValidMiddleware = async (
   request: Request,
   response: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  const newUserEmail: string | undefined = response.locals.email;
+  const userId: number = Number(request.params.id);
 
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
-  if (newUserEmail) {
+  if (userId) {
     const findUser: User | null = await userRepository.findOne({
       where: {
-        email: newUserEmail,
+        id: userId,
       },
     });
 
-    if (findUser) {
-      throw new AppError('Email already exists', 409);
+    if (!findUser) {
+      throw new AppError('User not found', 404);
     }
   }
 
   return next();
 };
 
-export default ensureEmailIsUniqueMiddleware;
+export default ensureIdIsValidMiddleware;

@@ -1,20 +1,42 @@
 import { Router } from 'express';
 import ensureBodyIsValidMiddleware from '../middlewares/ensureBodyIsValid.middleware';
-import { userSchemaRequest } from '../schemas/users.schemas';
+import {
+  userSchemaRequest,
+  userUpdateSchemaRequest,
+} from '../schemas/users.schemas';
 import {
   createUserController,
+  editUserByIdController,
   listUsersController,
 } from '../controllers/users.controllers';
 import ensureEmailIsUniqueMiddleware from '../middlewares/ensureEmailIsUnique.middleware';
+import ensureTokenIsAdminMiddleware from '../middlewares/ensureTokenIsAdmin.middleware';
+import ensureTokenIsValidMiddleware from '../middlewares/ensureTokenIsValid.middleware';
+import ensureUserPermissionMiddleware from '../middlewares/ensureUserPermission.middleware';
+import ensureIdIsValidMiddleware from '../middlewares/ensureIdIsValid.middleware';
 
-const userRouters: Router = Router();
+const userRoutes: Router = Router();
 
-userRouters.post(
+userRoutes.post(
   '',
   ensureBodyIsValidMiddleware(userSchemaRequest),
   ensureEmailIsUniqueMiddleware,
   createUserController
 );
-userRouters.get('', listUsersController);
+userRoutes.get(
+  '',
+  ensureTokenIsValidMiddleware,
+  ensureTokenIsAdminMiddleware,
+  listUsersController
+);
+userRoutes.patch(
+  '/:id',
+  ensureBodyIsValidMiddleware(userUpdateSchemaRequest),
+  ensureIdIsValidMiddleware,
+  ensureTokenIsValidMiddleware,
+  ensureUserPermissionMiddleware,
+  ensureEmailIsUniqueMiddleware,
+  editUserByIdController
+);
 
-export default userRouters;
+export default userRoutes;
