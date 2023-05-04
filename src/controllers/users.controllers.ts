@@ -11,7 +11,7 @@ const createUserController = async (
 
   const newUser = await createUserService(userData);
 
-  return response.json(newUser);
+  return response.status(201).json(newUser);
 };
 
 const listUsersController = async (
@@ -20,7 +20,7 @@ const listUsersController = async (
 ): Promise<Response> => {
   const allUsers = await listUsersService();
 
-  return response.json(allUsers);
+  return response.status(201).json(allUsers);
 };
 
 export { createUserController, listUsersController };
