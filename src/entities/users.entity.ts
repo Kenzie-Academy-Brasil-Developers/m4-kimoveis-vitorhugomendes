@@ -2,8 +2,6 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  BeforeInsert,
-  BeforeUpdate,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
@@ -26,25 +24,14 @@ class User {
   @Column({ type: 'varchar', length: 120 })
   password: string;
 
-  @CreateDateColumn()
-  createdAt: string | Date;
+  @CreateDateColumn({ type: 'date' })
+  createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: string | Date;
+  @UpdateDateColumn({ type: 'date' })
+  updatedAt: Date;
 
-  @DeleteDateColumn({ nullable: true })
-  deletedAt?: string | Date | null | undefined;
-
-  // @BeforeInsert()
-  // createDate() {
-  //   this.createdAt = new Date();
-  //   this.updatedAt = new Date();
-  // }
-
-  // @BeforeUpdate()
-  // updateDate() {
-  //   this.updatedAt = new Date();
-  // }
+  @DeleteDateColumn({ type: 'date', nullable: true })
+  deletedAt?: Date | null | undefined;
 }
 
 export default User;
