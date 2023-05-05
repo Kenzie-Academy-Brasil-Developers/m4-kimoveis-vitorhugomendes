@@ -3,6 +3,7 @@ import { TUserRequest } from '../interfaces/users.interfaces';
 import createUserService from '../services/users/createUser.service';
 import listUsersService from '../services/users/listUsers.service';
 import editUserByIdService from '../services/users/editUserById.service';
+import deleteUserByIdService from '../services/users/deleteUserById.service';
 
 const createUserController = async (
   request: Request,
@@ -21,7 +22,7 @@ const listUsersController = async (
 ): Promise<Response> => {
   const allUsers = await listUsersService();
 
-  return response.status(201).json(allUsers);
+  return response.json(allUsers).send();
 };
 
 const editUserByIdController = async (
@@ -36,4 +37,20 @@ const editUserByIdController = async (
   return response.json(editedUser);
 };
 
-export { createUserController, listUsersController, editUserByIdController };
+const deleteUserByIdController = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const userId: number = Number(request.params.id);
+
+  const softDeleteUser = await deleteUserByIdService(userId);
+
+  return response.status(204).send();
+};
+
+export {
+  createUserController,
+  listUsersController,
+  editUserByIdController,
+  deleteUserByIdController,
+};

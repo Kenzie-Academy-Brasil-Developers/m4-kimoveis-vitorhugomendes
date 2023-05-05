@@ -3,6 +3,7 @@ import { User } from '../../entities';
 import { TUserResponse, TUserUpdate } from '../../interfaces/users.interfaces';
 import { AppDataSource } from '../../data-source';
 import { userSchemaResponse } from '../../schemas/users.schemas';
+import { hash } from 'bcryptjs';
 
 const editUserByIdService = async (
   userData: TUserUpdate,
@@ -10,8 +11,15 @@ const editUserByIdService = async (
 ): Promise<TUserResponse> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
+  if (userData.password) {
+    const hashedPassword = await hash(userData.password, 10);
+    const newUserData = { ...userData, password: hashedPassword };
+
+    userData = newUserData;
+  }
+
   const updateUser = await userRepository
-    .createQueryBuilder()
+    .createQueryBuilder('users')
     .update(User)
     .set(userData)
     .where({ id: userId })

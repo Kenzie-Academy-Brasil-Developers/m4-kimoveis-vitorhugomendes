@@ -6,6 +6,7 @@ import {
 } from '../schemas/users.schemas';
 import {
   createUserController,
+  deleteUserByIdController,
   editUserByIdController,
   listUsersController,
 } from '../controllers/users.controllers';
@@ -37,6 +38,14 @@ userRoutes.patch(
   ensureUserPermissionMiddleware,
   ensureEmailIsUniqueMiddleware,
   editUserByIdController
+);
+
+userRoutes.delete(
+  '/:id',
+  ensureIdIsValidMiddleware,
+  ensureTokenIsValidMiddleware,
+  ensureTokenIsAdminMiddleware,
+  deleteUserByIdController
 );
 
 export default userRoutes;

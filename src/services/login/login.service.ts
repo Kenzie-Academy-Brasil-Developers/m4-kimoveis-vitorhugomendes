@@ -19,7 +19,7 @@ const loginService = async (
   });
 
   if (!user) {
-    throw new AppError('Wrong email/password', 401);
+    throw new AppError('Invalid credentials', 401);
   }
 
   const passwordMatch: boolean = await compare(
@@ -28,12 +28,12 @@ const loginService = async (
   );
 
   if (!passwordMatch) {
-    throw new AppError('Wrong email/password', 401);
+    throw new AppError('Invalid credentials', 401);
   }
 
-  if (user.deletedAt) {
-    throw new AppError('Deleted User', 401);
-  }
+  // if (user.deletedAt) {
+  //   throw new AppError('Invalid credentials', 401);
+  // }
 
   const token: string = sign(
     { admin: user.admin },
