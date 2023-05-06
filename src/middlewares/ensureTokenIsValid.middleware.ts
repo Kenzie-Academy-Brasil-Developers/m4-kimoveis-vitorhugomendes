@@ -21,9 +21,6 @@ const ensureTokenIsValidMiddleware = async (
     (error: any, decoded: any) => {
       if (error) throw new AppError(error.message, 401);
 
-      console.log(decoded.sub);
-      console.log(decoded.admin);
-
       response.locals.id = decoded.sub;
       response.locals.admin = decoded.admin;
     }

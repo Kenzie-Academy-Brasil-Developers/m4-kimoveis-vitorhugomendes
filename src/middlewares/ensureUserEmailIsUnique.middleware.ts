@@ -4,7 +4,7 @@ import { User } from '../entities';
 import { AppDataSource } from '../data-source';
 import { AppError } from '../error';
 
-const ensureEmailIsUniqueMiddleware = async (
+const ensureUserEmailIsUniqueMiddleware = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -28,4 +28,4 @@ const ensureEmailIsUniqueMiddleware = async (
   return next();
 };
 
-export default ensureEmailIsUniqueMiddleware;
+export default ensureUserEmailIsUniqueMiddleware;

@@ -10,7 +10,7 @@ import {
   editUserByIdController,
   listUsersController,
 } from '../controllers/users.controllers';
-import ensureEmailIsUniqueMiddleware from '../middlewares/ensureEmailIsUnique.middleware';
+import ensureUserEmailIsUniqueMiddleware from '../middlewares/ensureUserEmailIsUnique.middleware';
 import ensureTokenIsAdminMiddleware from '../middlewares/ensureTokenIsAdmin.middleware';
 import ensureTokenIsValidMiddleware from '../middlewares/ensureTokenIsValid.middleware';
 import ensureUserPermissionMiddleware from '../middlewares/ensureUserPermission.middleware';
@@ -21,7 +21,7 @@ const userRoutes: Router = Router();
 userRoutes.post(
   '',
   ensureBodyIsValidMiddleware(userSchemaRequest),
-  ensureEmailIsUniqueMiddleware,
+  ensureUserEmailIsUniqueMiddleware,
   createUserController
 );
 userRoutes.get(
@@ -36,7 +36,7 @@ userRoutes.patch(
   ensureIdIsValidMiddleware,
   ensureTokenIsValidMiddleware,
   ensureUserPermissionMiddleware,
-  ensureEmailIsUniqueMiddleware,
+  ensureUserEmailIsUniqueMiddleware,
   editUserByIdController
 );
 

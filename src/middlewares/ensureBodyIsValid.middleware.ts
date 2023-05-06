@@ -5,6 +5,7 @@ const ensureBodyIsValidMiddleware =
   (schema: ZodTypeAny) =>
   (request: Request, response: Response, next: NextFunction) => {
     response.locals.email = request.body.email;
+    response.locals.name = request.body.name;
 
     const validatedBody = schema.parse(request.body);
 

@@ -9,9 +9,10 @@ const listUsersService = async (): Promise<TUserResponse[]> => {
 
   const allUsers: User[] = await userRepository.find();
 
-  const returnUsers: TUserResponse[] = allUsersSchemaResponse.parse(allUsers);
+  const returnAllUsers: TUserResponse[] =
+    allUsersSchemaResponse.parse(allUsers);
 
-  return returnUsers;
+  return returnAllUsers;
 };
 
 export default listUsersService;

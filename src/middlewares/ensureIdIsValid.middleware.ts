@@ -9,19 +9,23 @@ const ensureIdIsValidMiddleware = async (
   response: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  const userId: number = Number(request.params.id);
+  const baseUrl = request.baseUrl;
 
-  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+  if (baseUrl === '/users') {
+    const userId: number = Number(request.params.id);
 
-  if (userId) {
-    const findUser: User | null = await userRepository.findOne({
-      where: {
-        id: userId,
-      },
-    });
+    const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
-    if (!findUser) {
-      throw new AppError('User not found', 404);
+    if (userId) {
+      const findUser: User | null = await userRepository.findOne({
+        where: {
+          id: userId,
+        },
+      });
+
+      if (!findUser) {
+        throw new AppError('User not found', 404);
+      }
     }
   }
 
