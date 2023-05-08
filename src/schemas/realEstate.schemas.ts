@@ -1,18 +1,37 @@
 import { z } from 'zod';
+import { addressSchema, addressSchemaRequest } from './address.schema';
+import { categorySchema } from './categories.schemas';
 
-const realStateSchema = z.object({
+const realEstateSchema = z.object({
   id: z.number(),
   value: z.number().or(z.string()),
-  size: z.number().int(),
-  address: z.object({
-    street: z.string().max(45),
-    zipCode: z.string().max(8),
-    number: z.string().max(7).optional(),
-    city: z.string().max(20),
-    state: z.string().max(2),
-  }),
-  categoryId: z.number(),
-  sold: z.boolean(),
+  size: z.number().positive(),
+  address: addressSchema,
+  category: categorySchema,
+  sold: z.boolean().default(false),
   createdAt: z.date().or(z.string()),
   updatedAt: z.date().or(z.string()),
 });
+
+const realEstateSchemaRequest = z.object({
+  value: z.number().or(z.string()),
+  size: z.number().positive(),
+  address: addressSchemaRequest,
+  categoryId: z.number(),
+});
+
+const realEstateByCategorySchemaResponse = realEstateSchema.omit({
+  address: true,
+  category: true,
+});
+
+const allRealEstatesByCategorySchemaResponse = z.array(
+  realEstateByCategorySchemaResponse
+);
+
+export {
+  realEstateSchema,
+  realEstateSchemaRequest,
+  allRealEstatesByCategorySchemaResponse,
+  realEstateByCategorySchemaResponse,
+};

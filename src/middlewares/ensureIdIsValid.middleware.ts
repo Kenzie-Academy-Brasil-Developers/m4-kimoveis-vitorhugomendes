@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Repository } from 'typeorm';
-import { User } from '../entities';
+import { Category, User } from '../entities';
 import { AppDataSource } from '../data-source';
 import { AppError } from '../error';
 
@@ -26,6 +26,26 @@ const ensureIdIsValidMiddleware = async (
       if (!findUser) {
         throw new AppError('User not found', 404);
       }
+    }
+  }
+
+  if (baseUrl === '/categories') {
+    const categoryId: number = Number(request.params.id);
+
+    const categoryRepository: Repository<Category> =
+      AppDataSource.getRepository(Category);
+
+    if (categoryId) {
+      const findCategory: Category | null = await categoryRepository.findOne({
+        where: {
+          id: categoryId,
+        },
+      });
+
+      if (!findCategory) {
+        throw new AppError('Category not found', 404);
+      }
+      response.locals.categoryName = findCategory.name;
     }
   }
 

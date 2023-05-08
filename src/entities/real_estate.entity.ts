@@ -7,11 +7,9 @@ import {
   OneToOne,
   JoinColumn,
   ManyToOne,
-  OneToMany,
 } from 'typeorm';
 import Address from './addresses.entity';
 import Category from './categories.entity';
-import Schedule from './schedules.entity';
 
 @Entity('real_estate')
 class RealEstate {

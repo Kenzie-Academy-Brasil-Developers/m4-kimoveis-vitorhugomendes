@@ -31,10 +31,6 @@ const loginService = async (
     throw new AppError('Invalid credentials', 401);
   }
 
-  // if (user.deletedAt) {
-  //   throw new AppError('Invalid credentials', 401);
-  // }
-
   const token: string = sign(
     { admin: user.admin },
     String(process.env.SECRET_KEY),

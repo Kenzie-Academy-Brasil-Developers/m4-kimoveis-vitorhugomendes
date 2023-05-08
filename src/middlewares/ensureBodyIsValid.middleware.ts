@@ -6,6 +6,7 @@ const ensureBodyIsValidMiddleware =
   (request: Request, response: Response, next: NextFunction) => {
     response.locals.email = request.body.email;
     response.locals.name = request.body.name;
+    response.locals.address = request.body.address;
 
     const validatedBody = schema.parse(request.body);
 

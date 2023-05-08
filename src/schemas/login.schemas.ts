@@ -6,8 +6,8 @@ const loginSchema = z.object({
   token: z.string(),
 });
 
-const requestLoginSchema = loginSchema.omit({ token: true });
+const loginSchemaRequest = loginSchema.omit({ token: true });
 
-const responseLoginSchema = loginSchema.omit({ email: true, password: true });
+const loginSchemaResponse = loginSchema.omit({ email: true, password: true });
 
-export { loginSchema, requestLoginSchema, responseLoginSchema };
+export { loginSchema, loginSchemaRequest, loginSchemaResponse };
