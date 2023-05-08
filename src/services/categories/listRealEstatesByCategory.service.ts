@@ -17,6 +17,8 @@ const listRealEstatesByCategoryService = async (
     .where('real_estate.categoryId = :id', { id: categoryId })
     .execute();
 
+  console.log(allRealEstates);
+
   const allRealEstatesResponse =
     allRealEstatesByCategorySchemaResponse.parse(allRealEstates);
 
