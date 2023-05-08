@@ -8,7 +8,7 @@ const realEstateSchema = z.object({
   size: z.number().positive(),
   address: addressSchema,
   category: categorySchema,
-  sold: z.boolean(),
+  sold: z.boolean().default(false),
   createdAt: z.date().or(z.string()),
   updatedAt: z.date().or(z.string()),
 });

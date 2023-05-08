@@ -11,10 +11,10 @@ import { AppError } from '../../error';
 const createRealEstateService = async (
   realEstateData: TRealEstateRequest
 ): Promise<TRealEstate> => {
-  const { address, categoryId, ...newRealEstateData } = realEstateData;
-
   const addressRepository: Repository<Address> =
     AppDataSource.getRepository(Address);
+
+  const { address, categoryId, ...newRealEstateData } = realEstateData;
 
   const newAddress: Address = addressRepository.create(address);
   await addressRepository.save(newAddress);
