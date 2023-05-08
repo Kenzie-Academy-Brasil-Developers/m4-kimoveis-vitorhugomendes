@@ -7,10 +7,10 @@ const listAllRealEstatesService = async (): Promise<TRealEstate[]> => {
   const realEstateRepository: Repository<RealEstate> =
     AppDataSource.getRepository(RealEstate);
 
-  const allRealEstates: RealEstate[] = await realEstateRepository.find();
-
-  //   const returnAllUsers: TUserResponse[] =
-  //     realEstateSchema.parse(allRealEstates);
+  const allRealEstates: RealEstate[] = await realEstateRepository
+    .createQueryBuilder('real_estates')
+    .innerJoinAndSelect('real_estates.address', 'address')
+    .getMany();
 
   return allRealEstates;
 };

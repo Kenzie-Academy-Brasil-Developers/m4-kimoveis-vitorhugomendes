@@ -19,7 +19,7 @@ const listAllRealEstatesController = async (
 ): Promise<Response> => {
   const allRealEstates = await listAllRealEstatesService();
 
-  return response.status(201).json(allRealEstates);
+  return response.json(allRealEstates).send();
 };
 
 export { createRealEstateController, listAllRealEstatesController };
