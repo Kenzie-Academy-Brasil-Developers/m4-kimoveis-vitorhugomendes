@@ -15,8 +15,7 @@ const listRealEstateByCategorySchemaResponse = categorySchema.extend({
       id: z.number(),
       value: z.number().or(z.string()),
       size: z.number().positive(),
-
-      sold: z.boolean().default(false),
+      sold: z.boolean(),
       createdAt: z.date().or(z.string()),
       updatedAt: z.date().or(z.string()),
     })

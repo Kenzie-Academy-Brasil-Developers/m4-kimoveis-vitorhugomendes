@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { addressSchema, addressSchemaRequest } from './address.schema';
+import { addressSchema, addressSchemaRequest } from './address.schemas';
 import { categorySchema } from './categories.schemas';
 
 const realEstateSchema = z.object({
@@ -8,7 +8,7 @@ const realEstateSchema = z.object({
   size: z.number().positive(),
   address: addressSchema,
   category: categorySchema,
-  sold: z.boolean().default(false),
+  sold: z.boolean(),
   createdAt: z.date().or(z.string()),
   updatedAt: z.date().or(z.string()),
 });

@@ -9,12 +9,12 @@ import { realEstateSchema } from '../../schemas/realEstate.schemas';
 import { AppError } from '../../error';
 
 const createRealEstateService = async (
-  realEstateData: TRealEstateRequest
+  realEstateDataRequest: TRealEstateRequest
 ): Promise<TRealEstate> => {
   const addressRepository: Repository<Address> =
     AppDataSource.getRepository(Address);
 
-  const { address, categoryId, ...newRealEstateData } = realEstateData;
+  const { address, categoryId, ...realEstateData } = realEstateDataRequest;
 
   const newAddress: Address = addressRepository.create(address);
   await addressRepository.save(newAddress);
@@ -33,11 +33,14 @@ const createRealEstateService = async (
   const realEstateRepository: Repository<RealEstate> =
     AppDataSource.getRepository(RealEstate);
 
-  const newRealEstate: RealEstate = realEstateRepository.create({
-    ...newRealEstateData,
+  const newRealEstateData = {
+    ...realEstateData,
     address: newAddress,
     category,
-  });
+  };
+
+  const newRealEstate: RealEstate =
+    realEstateRepository.create(newRealEstateData);
   await realEstateRepository.save(newRealEstate);
 
   const newRealEstateResponse = realEstateSchema.parse(newRealEstate);

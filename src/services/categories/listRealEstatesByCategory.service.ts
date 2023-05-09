@@ -11,11 +11,13 @@ const listRealEstatesByCategoryService = async (
   const realEstateRepository: Repository<RealEstate> =
     AppDataSource.getRepository(RealEstate);
 
-  const allRealEstates: RealEstate | null = await realEstateRepository
-    .createQueryBuilder('real_estate')
-    .select('*')
-    .where('real_estate.categoryId = :id', { id: categoryId })
-    .execute();
+  const allRealEstates: RealEstate[] | null = await realEstateRepository.find({
+    where: {
+      category: {
+        id: categoryId,
+      },
+    },
+  });
 
   const allRealEstatesResponse =
     allRealEstatesByCategorySchemaResponse.parse(allRealEstates);

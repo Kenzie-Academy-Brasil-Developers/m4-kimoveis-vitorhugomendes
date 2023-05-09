@@ -14,22 +14,20 @@ const ensureAddressIsUniqueMiddleware = async (
 
   let { number, ...newAddressData } = address;
 
-  if (number == undefined) {
-    number = '';
-  }
-
   const userRepository: Repository<Address> =
     AppDataSource.getRepository(Address);
 
-  if (address) {
-    const findAddress: Address | null = await userRepository.findOneBy({
-      ...newAddressData,
-      number,
-    });
+  if (!number) {
+    number = '0';
+  }
 
-    if (findAddress) {
-      throw new AppError('Address already exists', 409);
-    }
+  const findAddress: Address | null = await userRepository.findOneBy({
+    ...newAddressData,
+    number,
+  });
+
+  if (findAddress) {
+    throw new AppError('Address already exists', 409);
   }
 
   return next();
