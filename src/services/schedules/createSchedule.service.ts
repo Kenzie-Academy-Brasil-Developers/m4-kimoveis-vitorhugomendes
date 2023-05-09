@@ -1,17 +1,16 @@
 import { Repository } from 'typeorm';
 import {
-  TSchedule,
+  TCreateScheduleResponse,
   TScheduleRequest,
 } from '../../interfaces/schedules.interfaces';
 import { RealEstate, Schedule, User } from '../../entities';
 import { AppDataSource } from '../../data-source';
 import { AppError } from '../../error';
-import app from '../../app';
 
 const createScheduleService = async (
   scheduleData: TScheduleRequest,
   userId: number
-): Promise<any> => {
+): Promise<TCreateScheduleResponse> => {
   const { date, hour, realEstateId } = scheduleData;
 
   const newScheduleDate = new Date(`${date},${hour}`);

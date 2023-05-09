@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Repository } from 'typeorm';
-import { Category, User } from '../entities';
+import { Category, RealEstate, User } from '../entities';
 import { AppDataSource } from '../data-source';
 import { AppError } from '../error';
 
@@ -46,6 +46,25 @@ const ensureIdIsValidMiddleware = async (
         throw new AppError('Category not found', 404);
       }
       response.locals.categoryName = findCategory.name;
+    }
+  }
+  if (baseUrl == '/schedules') {
+    const realEstateId: number = Number(request.params.id);
+
+    const realStateRepository: Repository<RealEstate> =
+      AppDataSource.getRepository(RealEstate);
+
+    if (realEstateId) {
+      const findRealEstate: RealEstate | null =
+        await realStateRepository.findOne({
+          where: {
+            id: realEstateId,
+          },
+        });
+
+      if (!findRealEstate) {
+        throw new AppError('RealEstate not found', 404);
+      }
     }
   }
 

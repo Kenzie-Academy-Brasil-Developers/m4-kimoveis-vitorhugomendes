@@ -1,15 +1,17 @@
 import { Router } from 'express';
-import ensureBodyIsValidMiddleware from '../middlewares/ensureBodyIsValid.middleware';
 import { categorySchemaRequest } from '../schemas/categories.schemas';
+import {
+  ensureBodyIsValidMiddleware,
+  ensureTokenIsValidMiddleware,
+  ensureTokenIsAdminMiddleware,
+  ensureCategoryNameIsUniqueMiddleware,
+  ensureIdIsValidMiddleware,
+} from '../middlewares/index.middleware';
 import {
   createCategoryControlller,
   listCategoriesController,
   listRealEstatesByCategoryController,
 } from '../controllers/categories.controllers';
-import ensureTokenIsValidMiddleware from '../middlewares/ensureTokenIsValid.middleware';
-import ensureTokenIsAdminMiddleware from '../middlewares/ensureTokenIsAdmin.middleware';
-import ensureCategoryNameIsUniqueMiddleware from '../middlewares/ensureCategoryNameIsUnique.middleware';
-import ensureIdIsValidMiddleware from '../middlewares/ensureIdIsValid.middleware';
 
 const categoriesRoutes: Router = Router();
 

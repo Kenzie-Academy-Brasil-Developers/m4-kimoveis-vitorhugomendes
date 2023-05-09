@@ -1,13 +1,15 @@
 import { Router } from 'express';
-import ensureBodyIsValidMiddleware from '../middlewares/ensureBodyIsValid.middleware';
 import { realEstateSchemaRequest } from '../schemas/realEstate.schemas';
+import {
+  ensureBodyIsValidMiddleware,
+  ensureTokenIsValidMiddleware,
+  ensureTokenIsAdminMiddleware,
+  ensureAddressIsUniqueMiddleware,
+} from '../middlewares/index.middleware';
 import {
   createRealEstateController,
   listAllRealEstatesController,
 } from '../controllers/realEstate.controllers';
-import ensureTokenIsValidMiddleware from '../middlewares/ensureTokenIsValid.middleware';
-import ensureTokenIsAdminMiddleware from '../middlewares/ensureTokenIsAdmin.middleware';
-import ensureAddressIsUniqueMiddleware from '../middlewares/ensureAddressIsUnique.middleware';
 
 const realEstateRoutes: Router = Router();
 

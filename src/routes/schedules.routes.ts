@@ -1,8 +1,15 @@
 import { Router } from 'express';
-import ensureBodyIsValidMiddleware from '../middlewares/ensureBodyIsValid.middleware';
 import { scheduleSchemaRequest } from '../schemas/schedules.schemas';
-import { createScheduleController } from '../controllers/schedules.controllers';
-import ensureTokenIsValidMiddleware from '../middlewares/ensureTokenIsValid.middleware';
+import {
+  ensureBodyIsValidMiddleware,
+  ensureTokenIsValidMiddleware,
+  ensureTokenIsAdminMiddleware,
+  ensureIdIsValidMiddleware,
+} from '../middlewares/index.middleware';
+import {
+  createScheduleController,
+  listSchedulesByRealEstateIdController,
+} from '../controllers/schedules.controllers';
 
 const schedulesRoutes: Router = Router();
 
@@ -11,6 +18,14 @@ schedulesRoutes.post(
   ensureTokenIsValidMiddleware,
   ensureBodyIsValidMiddleware(scheduleSchemaRequest),
   createScheduleController
+);
+
+schedulesRoutes.get(
+  '/realEstate/:id',
+  ensureIdIsValidMiddleware,
+  ensureTokenIsValidMiddleware,
+  ensureTokenIsAdminMiddleware,
+  listSchedulesByRealEstateIdController
 );
 
 export default schedulesRoutes;
