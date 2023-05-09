@@ -8,8 +8,8 @@ const schedulesRoutes: Router = Router();
 
 schedulesRoutes.post(
   '',
-  ensureBodyIsValidMiddleware(scheduleSchemaRequest),
   ensureTokenIsValidMiddleware,
+  ensureBodyIsValidMiddleware(scheduleSchemaRequest),
   createScheduleController
 );
 

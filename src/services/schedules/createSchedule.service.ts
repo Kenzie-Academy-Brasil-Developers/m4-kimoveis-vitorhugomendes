@@ -6,12 +6,27 @@ import {
 import { RealEstate, Schedule, User } from '../../entities';
 import { AppDataSource } from '../../data-source';
 import { AppError } from '../../error';
+import app from '../../app';
 
 const createScheduleService = async (
   scheduleData: TScheduleRequest,
   userId: number
 ): Promise<any> => {
   const { date, hour, realEstateId } = scheduleData;
+
+  const newScheduleDate = new Date(`${date},${hour}`);
+
+  const newScheduleHour = newScheduleDate.getHours();
+
+  const newScheduleDay = newScheduleDate.getDay();
+
+  if (newScheduleHour < 8 || newScheduleHour > 18) {
+    throw new AppError('Invalid hour, available times are 8AM to 18PM', 400);
+  }
+
+  if (newScheduleDay == 1 || newScheduleDay == 6) {
+    throw new AppError('Invalid date, work days are monday to friday', 400);
+  }
 
   const scheduleRepository: Repository<Schedule> =
     AppDataSource.getRepository(Schedule);
@@ -34,7 +49,10 @@ const createScheduleService = async (
     .getOne();
 
   if (checkUserSchedule) {
-    throw new AppError('Usuário já tem horario', 409);
+    throw new AppError(
+      'User schedule to this real estate at this date and time already exists',
+      409
+    );
   }
 
   const realEstateRepository: Repository<RealEstate> =
@@ -60,7 +78,10 @@ const createScheduleService = async (
     .getOne();
 
   if (checkRealEstateSchedule) {
-    throw new AppError('RealEstate já tem horario', 409);
+    throw new AppError(
+      'Schedule to this real estate at this date and time already exists',
+      409
+    );
   }
 
   const newSchedule: Schedule = scheduleRepository.create({
@@ -71,7 +92,7 @@ const createScheduleService = async (
   });
   await scheduleRepository.save(newSchedule);
 
-  return newSchedule;
+  return { message: 'Schedule created' };
 };
 
 export default createScheduleService;
