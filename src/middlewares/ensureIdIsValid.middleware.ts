@@ -16,16 +16,14 @@ const ensureIdIsValidMiddleware = async (
 
     const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
-    if (userId) {
-      const findUser: User | null = await userRepository.findOne({
-        where: {
-          id: userId,
-        },
-      });
+    const findUser: User | null = await userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
 
-      if (!findUser) {
-        throw new AppError('User not found', 404);
-      }
+    if (!findUser) {
+      throw new AppError('User not found', 404);
     }
   }
 
@@ -35,36 +33,34 @@ const ensureIdIsValidMiddleware = async (
     const categoryRepository: Repository<Category> =
       AppDataSource.getRepository(Category);
 
-    if (categoryId) {
-      const findCategory: Category | null = await categoryRepository.findOne({
-        where: {
-          id: categoryId,
-        },
-      });
+    const findCategory: Category | null = await categoryRepository.findOne({
+      where: {
+        id: categoryId,
+      },
+    });
 
-      if (!findCategory) {
-        throw new AppError('Category not found', 404);
-      }
-      response.locals.categoryName = findCategory.name;
+    if (!findCategory) {
+      throw new AppError('Category not found', 404);
     }
+    response.locals.categoryName = findCategory.name;
   }
+
   if (baseUrl == '/schedules') {
     const realEstateId: number = Number(request.params.id);
 
     const realStateRepository: Repository<RealEstate> =
       AppDataSource.getRepository(RealEstate);
 
-    if (realEstateId) {
-      const findRealEstate: RealEstate | null =
-        await realStateRepository.findOne({
-          where: {
-            id: realEstateId,
-          },
-        });
-
-      if (!findRealEstate) {
-        throw new AppError('RealEstate not found', 404);
+    const findRealEstate: RealEstate | null = await realStateRepository.findOne(
+      {
+        where: {
+          id: realEstateId,
+        },
       }
+    );
+
+    if (!findRealEstate) {
+      throw new AppError('RealEstate not found', 404);
     }
   }
 

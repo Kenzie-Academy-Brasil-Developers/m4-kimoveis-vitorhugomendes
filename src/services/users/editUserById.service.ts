@@ -11,28 +11,18 @@ const editUserByIdService = async (
 ): Promise<TUserResponse> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
-  if (userData.password) {
-    const hashedPassword = await hash(userData.password, 10);
-    const newUserData = { ...userData, password: hashedPassword };
-
-    userData = newUserData;
-  }
-
-  const updateUser = await userRepository
-    .createQueryBuilder('users')
-    .update(User)
-    .set(userData)
-    .where({ id: userId })
-    .updateEntity(true)
-    .execute();
-
-  const user: User | null = await userRepository.findOne({
-    where: {
-      id: userId,
-    },
+  const oldUserData: User | null = await userRepository.findOneBy({
+    id: userId,
   });
 
-  const returnUpdatedUser = userSchemaResponse.parse(user);
+  const newUserData: User = userRepository.create({
+    ...oldUserData,
+    ...userData,
+  });
+
+  await userRepository.save(newUserData);
+
+  const returnUpdatedUser = userSchemaResponse.parse(newUserData);
 
   return returnUpdatedUser;
 };
